@@ -18,4 +18,8 @@ public class Storage {
     public int getSize(){
         return size;
     }
+
+    public void setSize(int n){
+        size = n;
+    }
 }

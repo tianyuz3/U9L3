@@ -1,9 +1,18 @@
 import java.util.*;
 public class VolumeGroup extends Storage{
-    public VolumeGroup(String name, String ID, PhysicalVolume[] Pvolumes , LogicalVolume[] lVolumes){
-        int size = 0;
-        for(int i = 0 ; i<Pvolumes.length ; i++)
 
-        super(name,ID,)
+    private int size;
+    private int spaceLeft;
+
+    public VolumeGroup(String name, String ID, PhysicalVolume[] Pvolumes , LogicalVolume lVolumes){
+      super(name,ID,0);
+      super.setSize(getSize(Pvolumes));
+      spaceLeft = lVolumes.getSize()- getTotalSize(Pvolumes);
+    }
+    public int getTotalSize(PhysicalVolume[] pV){
+        for(int i = 0 ; i<pV.length ; i++){
+            size += pV[i].getSize();
+        }
+        return size;
     }
 }
