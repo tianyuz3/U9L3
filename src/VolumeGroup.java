@@ -6,7 +6,7 @@ public class VolumeGroup extends Storage{
 
     public VolumeGroup(String name, String ID, PhysicalVolume[] Pvolumes , LogicalVolume lVolumes){
       super(name,ID,0);
-      super.setSize(getSize(Pvolumes));
+      setSize(getTotalSize(Pvolumes));
       spaceLeft = lVolumes.getSize()- getTotalSize(Pvolumes);
     }
     public int getTotalSize(PhysicalVolume[] pV){
