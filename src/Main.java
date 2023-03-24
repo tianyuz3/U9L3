@@ -15,12 +15,7 @@ public class Main {
             System.out.println("Exit: (exit)");
             choice = c.nextLine();
             if(choice.indexOf("Install drive")!=0){
-                UUID u = UUID.randomUUID();
-                String name = choice.substring(choice.indexOf("drive")+1);
-                int size = Integer.parseInt(name.substring(name.indexOf(" ")+1));
-                name = name.substring(0,name.indexOf(" "));
-                PhysicalDrive pv = new PhysicalDrive(name,size,u.toString());
-                System.out.println(pv.getName() + pv.getSize());
+
             }
         }
     }
