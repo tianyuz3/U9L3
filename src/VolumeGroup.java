@@ -1,16 +1,17 @@
+import java.io.Serializable;
 import java.util.*;
-public class VolumeGroup extends Storage{
+public class VolumeGroup extends Storage implements Serializable {
 
     private int size;
-    private int spaceLeft;
+
 
     ArrayList<PhysicalVolume> pvGroup = new ArrayList<PhysicalVolume>();
 
-    public VolumeGroup(String name, PhysicalVolume Pvolumes , ArrayList<LogicalVolume> lVolumes){
+    public VolumeGroup(String name, PhysicalVolume Pvolumes){
       super(name,0);
       pvGroup.add(Pvolumes);
       setSize(getTotalSize(pvGroup));
-      spaceLeft = getTotalSizeOfLv(lVolumes)- getTotalSize(pvGroup);
+
     }
     public int getTotalSize(ArrayList<PhysicalVolume> pV){
         for(int i = 0 ; i<pV.size() ; i++){
@@ -25,7 +26,6 @@ public class VolumeGroup extends Storage{
         }
         return s;
     }
-    public void getSpaceLeft(){
-        System.out.println("There are " + spaceLeft + "G left");
-    }
+
+
 }

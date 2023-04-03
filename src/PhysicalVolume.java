@@ -1,4 +1,6 @@
-public class PhysicalVolume extends Storage{
+import java.io.Serializable;
+
+public class PhysicalVolume extends Storage implements Serializable {
     PhysicalDrive drive;
     public PhysicalVolume(String name , int size, PhysicalDrive drive){
         super(name,size);

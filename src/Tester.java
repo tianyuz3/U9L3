@@ -1,3 +1,4 @@
+import java.util.*;
 public class Tester{
 
         public static void main(String[] args) {
@@ -16,6 +17,23 @@ public class Tester{
             System.out.println("This volume has a size of: " + pv2.getSizeInG());
 
             //Test for Volume Groups
+            VolumeGroup vg = new VolumeGroup("vgTest1",pv);
+            VolumeGroup vg2 = new VolumeGroup("vgTest2",pv2);
+            System.out.println("There are " + vg.getSize());
+            System.out.println(vg2.getSize());
+            System.out.println(vg2.getName());
+            ArrayList<VolumeGroup> listOfVg = new ArrayList<VolumeGroup>();
+            listOfVg.add(vg);
+            listOfVg.add(vg2);
+
+            //Test for Logical Volume
+            LogicalVolume lv = new LogicalVolume("lvTest1",30,listOfVg);
+            System.out.println(lv.getInfo());
+            for(VolumeGroup i : listOfVg){
+                System.out.println(i.getName());
+            }
+
+
 
         }
 

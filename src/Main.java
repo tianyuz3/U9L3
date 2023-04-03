@@ -1,22 +1,81 @@
+import java.io.*;
 import java.util.*;
 public class Main {
     public static void main(String[] args) {
+        Object obj = new Object();
         Scanner c = new Scanner(System.in);
         String choice = "";
-        while(!choice.equals("exit")) {
-            System.out.println("Install hard drives: (Install drive + name + size(in G))");
-            System.out.println("Get list of hard drives: " + "(List of drives)");
-            System.out.println("Create physical:" + "(pvcreate + name of the physical drive + name)");
-            System.out.println("Get list of physical volumes: " + "(list of pv)");
-            System.out.println("Create volume groups: " + "(vgcreate + name of the physical volume + name)");
-            System.out.println("Get list of volume groups: " + "(vgList)");
-            System.out.println("Create logical volumes: " + "(lvcreate + name + size + name of the volume group )");
-            System.out.println("Get list of logical volumes: " + "(lvlist)");
-            System.out.println("Exit: (exit)");
+        ArrayList<PhysicalDrive> pDList = new ArrayList<PhysicalDrive>();
+        ArrayList<PhysicalVolume> pVList = new ArrayList<PhysicalVolume>();
+        ArrayList<VolumeGroup> vGList = new ArrayList<VolumeGroup>();
+        ArrayList<LogicalVolume> lGList = new ArrayList<LogicalVolume>();
+        while (!choice.equals("exit")) {
+            System.out.print("cmd# ");
             choice = c.nextLine();
-            if(choice.indexOf("Install drive")!=0){
-
+            String[] arr = choice.split(" ");
+            if (arr[0].equals("install-drive")) {
+                pDList.add(new PhysicalDrive(arr[1], Integer.parseInt(arr[2])));
+                System.out.println("Installation Completed!");
+            } else if (arr[0].equals("list-drives")) {
+                for (int i = 0; i < pDList.size(); i++) {
+                    System.out.println(pDList.get(i).getInfo());
+                }
+            } else if (arr[0].equals("pvcreate")) {
+                for (int i = 0; i < pDList.size(); i++) {
+                    if (pDList.get(i).getName().equals(arr[2])) {
+                        pVList.add(new PhysicalVolume(arr[2], pDList.get(i).getSize(), pDList.get(i)));
+                        i = pDList.size();
+                        System.out.println("Installation completed!");
+                    }
+                }
+            }  else if(arr[0].equals("pvlist")){
+                for(int i = 0 ; i<pVList.size() ; i++){
+                    System.out.println(pVList.get(i).getPVInfo());
+                }
+            } else if(arr[0].equals("vgcreate")){
+             for(int i = 0 ; i<pVList.size() ; i++){
+                 if(pVList.get(i).getName().equals(arr[1])){
+                     vGList.add(new VolumeGroup(arr[2],pVList.get(i)));
+                 }
+             }
+            } else if(arr[0].equals("vglist")){
+                for(int i = 0 ; i<vGList.size() ; i++){
+                    System.out.println(vGList.get(i).getInfo());
+                }
             }
         }
+        try {
+            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream("storage.dat"));
+            for (int i = 0; i < pDList.size(); i++) {
+                output.writeObject(pDList.get(i));
+            }
+            for (int i = 0; i < pVList.size(); i++) {
+                output.writeObject(pVList.get(i));
+            }
+            for (int i = 0; i < vGList.size(); i++) {
+                output.writeObject(vGList.get(i));
+            }
+            for(int i = 0 ; i<lGList.size() ; i++){
+                output.writeObject(lGList.get(i));
+            }
+            output.close();
+        }
+
+        catch(IOException ioe){
+            System.err.println("Error saving to file");
+        }
+        try {
+            ObjectInputStream input = new ObjectInputStream(new FileInputStream("storage.dat"));
+            obj = input.readObject();
+            input.close();
+
+        }
+        catch(IOException ioe){
+            System.err.println("Couldn't open the file");
+        }
+        catch(ClassNotFoundException cnfe){
+            System.err.println("Class not found");
+        }
+        System.out.println(obj);
     }
 }
