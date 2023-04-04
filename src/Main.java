@@ -9,7 +9,13 @@ public class Main {
         ArrayList<PhysicalVolume> pVList = new ArrayList<PhysicalVolume>();
         ArrayList<VolumeGroup> vGList = new ArrayList<VolumeGroup>();
         ArrayList<LogicalVolume> lGList = new ArrayList<LogicalVolume>();
-        while (!choice.equals("exit")) {
+        pDList.add(new PhysicalDrive("PD1",10));
+        pDList.add(new PhysicalDrive("PD2",100));
+        pVList.add(new PhysicalVolume("PV1",50,pDList.get(0)));
+        pVList.add(new PhysicalVolume("PV2",600,pDList.get(1)));
+        vGList.add(new VolumeGroup("VG1",pVList.get(0)));
+
+            while (!choice.equals("exit")) {
             System.out.print("cmd# ");
             choice = c.nextLine();
             String[] arr = choice.split(" ");
@@ -41,6 +47,19 @@ public class Main {
             } else if(arr[0].equals("vglist")){
                 for(int i = 0 ; i<vGList.size() ; i++){
                     System.out.println(vGList.get(i).getInfo());
+                }
+            } else if(arr[0].equals("vgextend")){
+
+                for(int i = 0 ; i<vGList.size() ; i++){
+                    if(arr[1].equals(vGList.get(i).getName())){
+                        for(int k = 0 ; k<pVList.size() ; k++){
+                            if(pVList.get(k).getName().equals(arr[2])){
+                                vGList.get(i).addPhysicalVolume(pVList.get(k));
+                                k=pVList.size();
+                                i = vGList.size();
+                            }
+                        }
+                    }
                 }
             }
         }
